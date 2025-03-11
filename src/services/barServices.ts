@@ -1,3 +1,5 @@
+import { CrowdMeter } from "@shared/enums";
+
 const API_KEY = 'AIzaSyAszXC1be8aJ37eHuNcBm_-O1clWkPUwV4';
 const BASE_URL = 'https://maps.googleapis.com/maps/api/place';
 
@@ -20,6 +22,14 @@ async function fetchGooglePlaceDetails(placeId: string): Promise<any> {
   return data.result || {};
 }
 
+const randomCrowdMeter = () : string => {
+  const randomNum = Math.random();
+  if (randomNum < 0.1) return CrowdMeter.High.toString();
+  if (randomNum < 0.5) return CrowdMeter.Medium.toString();
+  return CrowdMeter.Low.toString();
+};
+
+
 async function fetchFoursquareDetails(lat: number, lng: number, name: string): Promise<any> {
   const foursquareUrl = `https://api.foursquare.com/v2/venues/search?ll=${lat},${lng}&query=${encodeURIComponent(name)}&radius=3000&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&v=20250228`;
   const response = await fetch(foursquareUrl);
@@ -30,7 +40,6 @@ async function fetchFoursquareDetails(lat: number, lng: number, name: string): P
 export const buildBarObject = async (venue: any, lat: number, lng: number): Promise<any> => {
   const googleDetails = await fetchGooglePlaceDetails(venue.place_id);
   const foursquareDetails = await fetchFoursquareDetails(lat, lng, venue.name);
-
   const dayAbbrevMap: Record<string, string> = {
     Monday: "Mon",
     Tuesday: "Tue",
@@ -46,7 +55,7 @@ export const buildBarObject = async (venue: any, lat: number, lng: number): Prom
     name: venue.name || "",
     barType: googleDetails.types && googleDetails.types.includes("night_club") ? "Night Club" : "Bar",
     waitTime: googleDetails.waitTime || 0,
-    crowdMeter: googleDetails.crowdMeter || "Medium",
+    crowdMeter: googleDetails.crowdMeter || randomCrowdMeter(),
     total_reviewer: googleDetails.user_ratings_total || 0,
     average_rating: googleDetails.rating || 0,
     cover: (googleDetails.photos && googleDetails.photos[0] && getPhotoUrl(googleDetails.photos[0].photo_reference)) || "",

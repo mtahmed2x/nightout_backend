@@ -6,7 +6,7 @@ export type BarSchema = {
   placeId: string;
   barType: string;
   waitTime: number;
-  crowdMeter: CrowdMeter;
+  crowdMeter: string;
   total_reviewer: number;
   average_rating: number;
   cover: string;
@@ -41,7 +41,7 @@ const barSchema = new Schema<BarSchema>({
   placeId: { type: String },
   barType: { type: String},
   waitTime: { type: Number },
-  crowdMeter: { type: String, enum: Object.values(CrowdMeter)},
+  crowdMeter: { type: String},
   total_reviewer: { type: Number },
   average_rating: { type: Number},
   cover: { type: String },

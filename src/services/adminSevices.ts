@@ -4,7 +4,6 @@ import { NextFunction, Request, Response } from "express";
 import Admin from "@models/adminModel";
 import sendEmail from "@utils/sendEmail";
 import Cloudinary from "@shared/cloudinary";
-import { logger } from "@shared/logger";
 import Auth from "@models/authModel";
 import User from "@models/userModel";
 import { startOfWeek, endOfWeek, subWeeks, format } from "date-fns";
