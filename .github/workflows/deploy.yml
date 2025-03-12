@@ -22,8 +22,8 @@ jobs:
           script: |
             set -e
 
-            PROJECT_DIR=~/projects/footlove_backend
-            REPO_URL=https://github.com/mir2x/footlove_backend.git
+            PROJECT_DIR=~/projects/social_backend
+            REPO_URL=https://github.com/mir2x/social_backend.git
             BRANCH=master
 
             echo "Starting deployment..."
@@ -45,26 +45,26 @@ jobs:
             echo "Ensuring the working directory is up-to-date..."
             git pull origin $BRANCH
 
-            if [ "$(docker ps -q -f name=footlove-backend)" ]; then
-              echo "Container 'footlove-backend' is running. Stopping and removing..."
-              docker stop footlove-backend
-              docker rm footlove-backend
-            elif [ "$(docker ps -aq -f status=exited -f name=footlove-backend)" ]; then
-              echo "Container 'footlove-backend' exists but is not running. Removing..."
-              docker rm footlove-backend
+            if [ "$(docker ps -q -f name=social-backend)" ]; then
+              echo "Container 'social-backend' is running. Stopping and removing..."
+              docker stop social-backend
+              docker rm social-backend
+            elif [ "$(docker ps -aq -f status=exited -f name=social-backend)" ]; then
+              echo "Container 'social-backend' exists but is not running. Removing..."
+              docker rm social-backend
             else
-              echo "No existing container 'footlove-backend' found."
+              echo "No existing container 'social-backend' found."
             fi
 
             echo "Building Docker image..."
-            docker buildx build --platform linux/amd64 -t footlove-backend:latest --load .
+            docker buildx build --platform linux/amd64 -t social-backend:latest --load .
 
             echo "Running Docker container..."
             docker run -d \
-              -p 7001:7001 \
+              -p 7002:7002 \
               --env-file .env \
               --restart on-failure \
-              --name footlove-backend \
-              footlove-backend:latest
+              --name social-backend \
+              social-backend:latest
 
             echo "Deployment completed successfully."
