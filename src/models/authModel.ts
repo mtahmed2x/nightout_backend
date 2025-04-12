@@ -7,6 +7,7 @@ export type AuthSchema = Document & {
   email: string;
   password: string;
   googleId: string;
+  appleId: string;
   verificationOTP: string;
   verificationOTPExpiredAt: Date | null;
   recoveryOTP: string;
@@ -37,6 +38,9 @@ const authSchema: Schema<AuthSchema> = new Schema<AuthSchema>({
   googleId: {
     type: String,
   },
+  appleId: {
+    type: String,
+  },
   verificationOTP: {
     type: String,
   },
@@ -56,7 +60,7 @@ const authSchema: Schema<AuthSchema> = new Schema<AuthSchema>({
   isBlocked: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
 authSchema.methods.comparePassword = async function (password: string) {
