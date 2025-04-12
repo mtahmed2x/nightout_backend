@@ -106,6 +106,7 @@ const signInWithGoogle = async (req: Request, res: Response, next: NextFunction)
 
 const signInWithApple = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const { identityToken, name } = req.body;
+  console.log(name);
 
   const { sub: userAppleId } = await appleSignin.verifyIdToken(identityToken, {
     audience: "com.tapinsocial.app",
