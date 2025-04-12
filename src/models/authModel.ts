@@ -29,8 +29,6 @@ export type AuthSchema = Document & {
 const authSchema: Schema<AuthSchema> = new Schema<AuthSchema>({
   email: {
     type: String,
-    required: true,
-    unique: true,
   },
   password: {
     type: String,
