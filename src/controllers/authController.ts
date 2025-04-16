@@ -106,17 +106,18 @@ const signInWithGoogle = async (req: Request, res: Response, next: NextFunction)
 
 const signInWithApple = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
   const { identityToken, name } = req.body;
-  console.log(name);
 
   const { sub: userAppleId } = await appleSignin.verifyIdToken(identityToken, {
     audience: "com.tapinsocial.app",
     ignoreExpiration: true,
   });
 
+  console.log(userAppleId);
+
   let auth;
   auth = await Auth.findOne({ appleId: userAppleId });
   if (!auth) {
-    auth = await Auth.create({ userAppleId });
+    auth = await Auth.create({ appleId: userAppleId });
     const user = await User.create({ auth: auth._id, userName: name });
     const accessToken = Auth.generateAccessToken(auth._id!.toString());
     return res.status(StatusCodes.OK).json({
